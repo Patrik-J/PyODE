@@ -17,15 +17,23 @@ PYBIND11_MODULE(_core, m) {
         py::arg("t"), py::arg("y"),
         "Call the function defining the ODE");
 
+    // Base FixedStepsizeSolver class
+    py::class_<FixedStepsizeSolver>(m, "FixedStepsizeSolver")
+    .def("setInitialConditions", &FixedStepsizeSolver::setInitialConditions, py::arg("initial"), py::arg("t0") = 0.0, "Set the initial conditions.")
+    .def("getCurrentSolution", &FixedStepsizeSolver::getCurrentSolution, "Get the result of the previous step.")
+    .def("__repr__", [](const FixedStepsizeSolver &self) {
+        std::ostringstream oss;
+        oss << self;
+        return oss.str();
+    });
+
     // EulerSolver
-    py::class_<EulerSolver>(m, "EulerSolver")
-        .def(py::init<ODE>(), py::arg("ode"), "Create an instace of the EulerSolver class")
-        .def("step", static_cast<void (EulerSolver::*)(double)>(&EulerSolver::step), py::arg("stepsize"),
-    "Perform an Euler step");
+    py::class_<EulerSolver, FixedStepsizeSolver>(m, "EulerSolver")
+    .def(py::init<ODE>(), py::arg("ode"), "Create an instace of the EulerSolver class")
+    .def("step", &EulerSolver::step, py::arg("stepsize"), "Perform an Euler step.");
 
     // RK4Solver
-    py::class_<RK4Solver>(m, "RK4Solver")
-        .def(py::init<ODE>(), py::arg("ode"), "Create an instace of the RK4Solver class")
-        .def("step", static_cast<void (RK4Solver::*)(double)>(&RK4Solver::step), py::arg("stepsize"),
-    "Perform an RK4 step");
+    py::class_<RK4Solver, FixedStepsizeSolver>(m, "RK4Solver")
+    .def(py::init<ODE>(), py::arg("ode"), "Create an instace of the RK4Solver class")
+    .def("step", &RK4Solver::step, py::arg("stepsize"), "Perform a RK4 step.");
 };  
