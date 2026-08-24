@@ -21,6 +21,9 @@ std::vector<double> ODE::operator() (double t, std::vector<double> y) const {
 
     unsigned int n = y.size();
 
+    if (n == 0) 
+        throw ODEException("Size must not be 0! Are the initial conditions set?");
+
     for (unsigned int i = 0; i < n-1; i++) {
         f.push_back(y[i+1]);
     };
@@ -28,4 +31,10 @@ std::vector<double> ODE::operator() (double t, std::vector<double> y) const {
     f.push_back(this->func(t, y));
 
     return f;
+};
+
+ODEException::ODEException(const char* msg) : msg(msg) {};
+
+const char* ODEException::what() const throw() {
+    return this->msg;
 };

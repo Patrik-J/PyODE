@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <vector>
+#include <exception>
 
 #include "more_math.hpp"
 
@@ -21,6 +22,15 @@ class ODE {
 
     private:
         const std::function<double(double, std::vector<double>)> func;
+};
+
+class ODEException : public std::exception {
+    public:
+        ODEException(const char* msg);
+        virtual const char* what() const throw();
+
+    private:
+        const char* msg;
 };
 
 #endif

@@ -5,10 +5,10 @@
 #include <exception>
 
 std::vector<double> operator+(std::vector<double> v1, std::vector<double> v2);
-void operator+=(std::vector<double> v1, std::vector<double> v2);
+std::vector<double>& operator+=(std::vector<double>& v1, std::vector<double>& v2);
 
 std::vector<double> operator-(std::vector<double> v1, std::vector<double> v2);
-void operator-=(std::vector<double> v1, std::vector<double> v2);
+std::vector<double>& operator-=(std::vector<double>& v1, std::vector<double>& v2);
 
 double operator*(std::vector<double> v1, std::vector<double> v2);
 std::vector<double> operator*(double d, std::vector<double> v);
