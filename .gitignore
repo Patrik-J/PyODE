@@ -1,2 +1,4 @@
 __pycache__/
 *.pyd
+.vscode/
+*.png
