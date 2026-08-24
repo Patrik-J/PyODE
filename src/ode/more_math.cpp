@@ -27,6 +27,22 @@ double operator*(std::vector<double> v1, std::vector<double> v2) {
     return out;
 };
 
+std::vector<double> operator*(double d, std::vector<double> v) {
+    std::vector<double> out;
+    unsigned int n = v.size();
+    for (unsigned int i = 0; i < n; i++) 
+        out.push_back(v[i]*d);
+    return out;
+};
+
+std::vector<double> operator*(std::vector<double> v, double d) {
+    return d*v;
+};
+
+std::vector<double> operator/(std::vector<double> v, double d) {
+    return (1/d)*v;
+};
+
 template <typename T>
 void assertSameLength(std::vector<T> v1, std::vector<T> v2) {
     if (v1.size() != v2.size()) 
