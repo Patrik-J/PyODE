@@ -9,6 +9,11 @@ std::vector<double> operator+(std::vector<double> v1, std::vector<double> v2) {
     return out;
 };
 
+void operator+=(std::vector<double> v1, std::vector<double> v2) {
+    assertSameLength(v1, v2);
+    v1 = v1 + v2;
+};
+
 std::vector<double> operator-(std::vector<double> v1, std::vector<double> v2) {
     assertSameLength(v1, v2);
     unsigned int n = v1.size();
@@ -16,6 +21,11 @@ std::vector<double> operator-(std::vector<double> v1, std::vector<double> v2) {
     for (unsigned int i = 0; i < n; i++) 
         out.push_back(v1[i] - v2[i]);
     return out;
+};
+
+void operator-=(std::vector<double> v1, std::vector<double> v2) {
+    assertSameLength(v1, v2);
+    v1 = v1 - v2;
 };
 
 double operator*(std::vector<double> v1, std::vector<double> v2) {
