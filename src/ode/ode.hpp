@@ -17,6 +17,7 @@ class ODE {
         // the entries i = 0,...,n-1 are simply data y^(i+1)_n
         // the last entry of the vector is f(t_n, y_n)
         std::vector<double> operator() (double t, std::vector<double> y);
+        std::vector<double> operator() (double t, std::vector<double> y) const;
 
     private:
         const std::function<double(double, std::vector<double>)> func;
