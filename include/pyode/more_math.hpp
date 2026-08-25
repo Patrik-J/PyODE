@@ -4,16 +4,18 @@
 #include <vector>
 #include <exception>
 
-std::vector<double> operator+(std::vector<double> v1, std::vector<double> v2);
-std::vector<double>& operator+=(std::vector<double>& v1, std::vector<double>& v2);
+using DoubleVector = std::vector<double>;
 
-std::vector<double> operator-(std::vector<double> v1, std::vector<double> v2);
-std::vector<double>& operator-=(std::vector<double>& v1, std::vector<double>& v2);
+DoubleVector operator+(DoubleVector v1, DoubleVector v2);
+DoubleVector& operator+=(DoubleVector& v1, DoubleVector& v2);
 
-double operator*(std::vector<double> v1, std::vector<double> v2);
-std::vector<double> operator*(double d, std::vector<double> v);
-std::vector<double> operator*(std::vector<double> v, double d);
-std::vector<double> operator/(std::vector<double> v, double d);
+DoubleVector operator-(DoubleVector v1, DoubleVector v2);
+DoubleVector& operator-=(DoubleVector& v1, DoubleVector& v2);
+
+double operator*(DoubleVector v1, DoubleVector v2);
+DoubleVector operator*(double d, DoubleVector v);
+DoubleVector operator*(DoubleVector v, double d);
+DoubleVector operator/(DoubleVector v, double d);
 
 template <typename T>
 void assertSameLength(std::vector<T> v1, std::vector<T> v2);
@@ -21,6 +23,31 @@ void assertSameLength(std::vector<T> v1, std::vector<T> v2);
 class VectorMathException : public std::exception {
     public:
         VectorMathException(const char* msg);
+        virtual const char* what() const throw();
+
+    private:
+        const char* msg;
+};
+
+class VectorContainer {
+    public:
+        VectorContainer(unsigned int size = 0);
+        
+        void setItem(unsigned int index, DoubleVector item);
+        DoubleVector getItem(unsigned int index);
+        unsigned int size();
+
+        void operator=(VectorContainer& v);
+
+    private:
+        unsigned int entries;
+
+        std::vector<DoubleVector> storage;
+};
+
+class VectorContainerException : public std::exception {
+    public:
+        VectorContainerException(const char* msg);
         virtual const char* what() const throw();
 
     private:
