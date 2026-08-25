@@ -8,5 +8,6 @@ I wanted to get a rough outline of how to create C++ extensions for Python using
 
 ## Usage
 
-The file *test.py* in the *test*-folder shows a simple working example.
+To get this thing running, simply run the *generate.py* Python-script, which will use *pybind11* to build a Python package from the C++ source code and install it using pip.  
 
+The file *test.py* in the *test*-folder shows a simple working example.
