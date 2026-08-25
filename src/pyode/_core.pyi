@@ -4,7 +4,16 @@ Bindings for the ODE class
 from __future__ import annotations
 import collections.abc
 import typing
-__all__: list[str] = ['EulerSolver', 'FixedStepsizeSolver', 'ODE', 'RK4Solver']
+__all__: list[str] = ['AdamsBashforthSolver', 'EulerSolver', 'FixedStepsizeSolver', 'ODE', 'RK4Solver']
+class AdamsBashforthSolver(FixedStepsizeSolver):
+    def __init__(self, ode: ODE, s: typing.SupportsInt | typing.SupportsIndex = 2) -> None:
+        """
+        Create an instace of the AdamsBashforthSolver class
+        """
+    def step(self, stepsize: typing.SupportsFloat | typing.SupportsIndex) -> None:
+        """
+        Perform a Adams-Bashforth step.
+        """
 class EulerSolver(FixedStepsizeSolver):
     def __init__(self, ode: ODE) -> None:
         """

@@ -36,4 +36,9 @@ PYBIND11_MODULE(_core, m) {
     py::class_<RK4Solver, FixedStepsizeSolver>(m, "RK4Solver")
     .def(py::init<ODE>(), py::arg("ode"), "Create an instace of the RK4Solver class")
     .def("step", &RK4Solver::step, py::arg("stepsize"), "Perform a RK4 step.");
+
+    // AdamsBashforthSolver
+    py::class_<AdamsBashforthSolver, FixedStepsizeSolver>(m, "AdamsBashforthSolver")
+    .def(py::init<ODE, unsigned int>(), py::arg("ode"), py::arg("s") = 2, "Create an instace of the AdamsBashforthSolver class")
+    .def("step", &AdamsBashforthSolver::step, py::arg("stepsize"), "Perform a Adams-Bashforth step.");
 };  
