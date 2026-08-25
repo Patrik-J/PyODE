@@ -75,26 +75,34 @@ VectorContainer::VectorContainer(unsigned int size) : entries(size) {
         this->storage.push_back(empty);
 };
 
-void VectorContainer::setItem(unsigned int index, DoubleVector item) {
-    if (index < 0 || index > this->entries)
+void VectorContainer::setItem(unsigned int index, DoubleVector& item) {
+    if (this->entries == 0) 
+        return;
+    if (index > this->entries - 1)
         throw VectorContainerException("Index out of range!");
     this->storage[index] = item;
 };
 
-DoubleVector VectorContainer::getItem(unsigned int index) {
-    if (index < 0 || index > this->entries)
+const DoubleVector& VectorContainer::getItem(unsigned int index) const {
+    if (index > this->entries)
         throw VectorContainerException("Index out of range!");
-    return this->storage.at(index);
+    return this->storage[index];
 };
 
-unsigned int VectorContainer::size() {
-    return this->entries;
+DoubleVector& VectorContainer::getItem(unsigned int index) {
+    if (index > this->entries)
+        throw VectorContainerException("Index out of range!");
+    return this->storage[index];
 };
 
-void VectorContainer::operator=(VectorContainer& v) {
+unsigned int VectorContainer::size() const {
+    unsigned int len = this->entries;
+    return len;
+};
+
+void VectorContainer::operator=(const VectorContainer& v) {
     this->entries = v.size();
-    for (unsigned int i = 0; i < this->entries; i++)
-        this->setItem(i, v.getItem(i));
+    this->storage = v.storage;
 };
 
 VectorContainerException::VectorContainerException(const char* msg) : msg(msg) {};

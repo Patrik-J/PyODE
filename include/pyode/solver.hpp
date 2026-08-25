@@ -16,7 +16,7 @@ class SolverException : public std::exception {
 enum FixedStepsizeSolverType {
     EULER,
     RK4,
-    AB2
+    AdamBash
 };
 
 class FixedStepsizeSolver {

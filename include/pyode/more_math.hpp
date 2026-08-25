@@ -33,11 +33,12 @@ class VectorContainer {
     public:
         VectorContainer(unsigned int size = 0);
         
-        void setItem(unsigned int index, DoubleVector item);
-        DoubleVector getItem(unsigned int index);
-        unsigned int size();
+        void setItem(unsigned int index, DoubleVector& item);
+        const DoubleVector& getItem(unsigned int index) const;
+        DoubleVector& getItem(unsigned int index);
+        unsigned int size() const;
 
-        void operator=(VectorContainer& v);
+        void operator=(const VectorContainer& v);
 
     private:
         unsigned int entries;

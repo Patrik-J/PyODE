@@ -27,15 +27,15 @@ std::ostream& operator<<(std::ostream &strm, const FixedStepsizeSolver& fss) {
         case FixedStepsizeSolverType::RK4:
             strm << "'Runge-Kutta 4'";
             break;
-        case FixedStepsizeSolverType::AB2:
-            strm << "'Adams-Bashforth 2 Step'";
+        case FixedStepsizeSolverType::AdamBash:
+            strm << "'Adams-Bashforth'";
             break;     
         default:
             strm << "Unknown";
             break;
     };
 
-    return strm;
+    return strm << std::endl;
 };
 
 EulerSolver::EulerSolver(ODE ode) : FixedStepsizeSolver(FixedStepsizeSolverType::EULER, ode) {};
@@ -63,7 +63,7 @@ void RK4Solver::step(double stepsize) {
     this->t += stepsize;
 };
 
-AdamsBashforthSolver::AdamsBashforthSolver(ODE ode, unsigned int s) : FixedStepsizeSolver(FixedStepsizeSolverType::AB2, ode) {
+AdamsBashforthSolver::AdamsBashforthSolver(ODE ode, unsigned int s) : FixedStepsizeSolver(FixedStepsizeSolverType::AdamBash, ode) {
     if (s < 1 || s > 5) 
         throw SolverException("Invalid argument: s for Adams-Bashforth must be between 1 and 5!");
     
@@ -91,38 +91,56 @@ AdamsBashforthSolver::AdamsBashforthSolver(ODE ode, unsigned int s) : FixedSteps
 
 void AdamsBashforthSolver::step(double stepsize) {
     // the values in the container are in the descending order, 
-    // i.e. index 0: y_n+s (e.g. s = 5), index 1: y_n+s-1, ..., index s-1: y_n
+    // i.e. index 0: y_n+s (e.g. s = 5), index 1: y_n+s-1, ..., index s-2: y_n
+    // e.g. s = 3:
+    // index 0: y_2; index 1: y_1 
 
-    bool empty = false;
+    bool full_history_available = true;
     unsigned int s = this->s;
     DoubleVector prior;
 
     // 1. Check if all values in the container are non-empty
     // if there is at least one further Euler step
-    for (unsigned int i = s-1; i > 0; i--) {
+    for (int i = s-2; i >= 0; i--) {
         prior = this->priorValues.getItem(i);
         if (prior.size() == 0) {
-            prior = this->current;
+            full_history_available = false;
+
+            this->priorValues.setItem(i, this->current);
+            
             DoubleVector next = this->ode(this->t, this->current);
             this->current += stepsize*next;
-            empty = true;
             break;
         }
     }
 
     // 2. Perform the Adams-Bashforth steps
-    if (empty == false) {
+    if (full_history_available == true) {
         DoubleVector next = this->current;
         DoubleVector f;
         double t = this->t;
         double c;
 
-        for (unsigned int i = 0; i < s; i++) {
-            f =  this->ode(this->t - i*stepsize, this->priorValues.getItem(i));
+        // perform the steps
+        for (unsigned int i = 1; i < s; i++) {
+            // get f(t_i, y_i)
+            f =  this->ode(this->t - i*stepsize, this->priorValues.getItem(i-1));
+            // get the respective
             c = this->constants[i];
 
+            // add to the next value
             next += stepsize*c*f;
         }
+        next += stepsize*this->constants[0]*this->ode(this->t, this->current);
+
+        // shift the values
+        unsigned int idx;
+        for (int i = s-2; i >= 1; i--) {
+            this->priorValues.setItem(i, this->priorValues.getItem(i - 1));
+        }
+        this->priorValues.setItem(0, this->current);
+
+        this->current = next;
     }
 
     this->t += stepsize;
