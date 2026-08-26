@@ -3,15 +3,7 @@
 
 #include <sstream>
 #include "ode.hpp"
-
-class SolverException : public std::exception {
-    public:
-        SolverException(const char* msg);
-        virtual const char* what() const throw();
-
-    private:
-        const char* msg;
-};
+#include "solver_exceptions.hpp"
 
 enum FixedStepsizeSolverType {
     Euler,

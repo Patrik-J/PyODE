@@ -1,11 +1,5 @@
 #include "solver.hpp"
 
-SolverException::SolverException(const char* msg) : msg(msg) {};
-
-const char* SolverException::what() const throw() {
-    return this->msg;
-};
-
 FixedStepsizeSolver::FixedStepsizeSolver(FixedStepsizeSolverType type, ODE ode) : type(type), ode(ode), t(0.0) {};
 
 void FixedStepsizeSolver::setInitialConditions(std::vector <double> initial, double t0) {
