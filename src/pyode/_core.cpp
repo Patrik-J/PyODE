@@ -32,6 +32,11 @@ PYBIND11_MODULE(_core, m) {
     .def(py::init<ODE>(), py::arg("ode"), "Create an instace of the EulerSolver class")
     .def("step", &EulerSolver::step, py::arg("stepsize"), "Perform an Euler step.");
 
+    // BackwardEulerSolver
+    py::class_<BackwardEulerSolver, FixedStepsizeSolver>(m, "BackwardEulerSolver")
+    .def(py::init<ODE>(), py::arg("ode"), "Create an instace of the BackwardEulerSolver class")
+    .def("step", &BackwardEulerSolver::step, py::arg("stepsize"), "Perform an backwards Euler step.");
+
     // RK4Solver
     py::class_<RK4Solver, FixedStepsizeSolver>(m, "RK4Solver")
     .def(py::init<ODE>(), py::arg("ode"), "Create an instace of the RK4Solver class")

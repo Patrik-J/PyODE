@@ -47,6 +47,47 @@ void EulerSolver::step(double stepsize) {
     this->current += stepsize * next;
 };
 
+BackwardEulerSolver::BackwardEulerSolver(ODE ode) : FixedStepsizeSolver(FixedStepsizeSolverType::EULER, ode) {};
+
+void BackwardEulerSolver::step(double stepsize) {
+    // y_n+1 = y_n + f(t_n+1, y_n+1)
+    // g(y_n+1) = f(t_n+1, y_n+1) + y_n
+    // y_n+1 = g(y_n+1) 
+
+    // the initial guess for the method is calculated by a forward Euler step
+    DoubleVector guess = this->current + stepsize*this->ode(this->t, this->current);
+
+    // t_n -> t_n+1
+    this->t += stepsize;
+
+    // define g
+    auto g = [this, stepsize](const DoubleVector& guess) {
+        return this->current + stepsize*this->ode(this->t, guess); 
+    };
+
+    // fixpoint iteration
+    for (int i = 0; i < BackwardEulerSolver::MAX_ITERATION_STEPS; i++) {
+        bool converged = true;
+        
+        DoubleVector next_guess = g(guess);
+        
+        // convergence check
+        for (unsigned int j = 0; j < guess.size(); j++) {
+            if (std::abs(next_guess[j] - guess[j]) > BackwardEulerSolver::MAX_ERROR) {
+                converged = false;
+                break;
+            }
+        }
+
+        guess = next_guess;
+
+        if (converged == true)
+            break;
+    }
+
+    this->current = guess;
+};
+
 RK4Solver::RK4Solver(ODE ode) : FixedStepsizeSolver(FixedStepsizeSolverType::RK4, ode) {};
 
 void RK4Solver::step(double stepsize) {

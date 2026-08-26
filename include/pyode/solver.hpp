@@ -43,6 +43,17 @@ class EulerSolver : public FixedStepsizeSolver {
         void step(double stepsize) override;
 };
 
+class BackwardEulerSolver : public FixedStepsizeSolver {
+    
+    static inline const unsigned int MAX_ITERATION_STEPS = 1000;
+    static inline const double MAX_ERROR = 1e-6;
+
+    public:
+        BackwardEulerSolver(ODE ode);
+
+        void step(double stepsize) override;
+};
+
 class RK4Solver : public FixedStepsizeSolver {
     public:
         RK4Solver(ODE ode);
