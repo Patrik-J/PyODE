@@ -30,19 +30,6 @@ class AdaptiveStepsizeSolver {
 };
 
 class RK45Solver : public AdaptiveStepsizeSolver {
-    
-    // static inline const double b0[] = {0.0};
-    // static inline const double b1[] = {2.0/9.0};
-    // static inline const double b2[] = {1.0/12.0, 1.0/4.0};
-    // static inline const double b3[] = {69.0/128.0, -243.0/128.0, 135.0/64.0};
-    // static inline const double b4[] = {-17.0/12.0, 27.0/4.0, -27.0/5.0, 16.0/15.0};
-    // static inline const double b5[] = {65.0/432.0, -5.0/16.0, 13.0/16.0, 4.0/27.0};
-
-
-    // static inline const double* butcher_tableau_beta[] = {
-    //     b0, b1, b2, b3, b4, b5
-    // };
-
     static inline constexpr double butcher_tableau_alpha[6] = {
         0.0, 2.0/9.0, 1.0/3.0, 3.0/4.0, 1.0, 5.0/6.0
     };
