@@ -1,4 +1,4 @@
-from pyode import ODE, EulerSolver, RK4Solver, AdamsBashforthSolver
+from pyode import ODE, EulerSolver, RK4Solver, AdamsBashforthSolver, BackwardEulerSolver
 
 from matplotlib import pyplot as plt
 
@@ -29,6 +29,9 @@ solver4.setInitialConditions(y0, t0)
 solver5 = AdamsBashforthSolver(ode, 5)
 solver5.setInitialConditions(y0, t0)
 
+solver6 = BackwardEulerSolver(ode)
+solver6.setInitialConditions(y0, t0)
+
 # show info
 # print(solver1)
 # print(solver2)
@@ -51,8 +54,11 @@ all_y_4 = [y0[0]]
 all_t_5 = [t0]
 all_y_5 = [y0[0]]
 
+all_t_6 = [t0]
+all_y_6 = [y0[0]]
+
 # stepsize
-h = 0.01
+h = 0.005
 
 # stepss
 steps = 4000
@@ -99,12 +105,21 @@ for _ in range(steps):
     all_y_5.append(res[0])
     all_t_5.append(all_t_5[-1] + h)
 
+    # get the next BackwardEuler step
+    solver6.step(h)
+    res = solver6.getCurrentSolution()
+
+    # add the point
+    all_y_6.append(res[0])
+    all_t_6.append(all_t_6[-1] + h)
+
 plt.figure(figsize=(8, 6))
 plt.plot(all_t_1, all_y_1, label="Euler method")
-plt.plot(all_t_2, all_y_2, label="RK4 method")
-plt.plot(all_t_3, all_y_3, label="Adams-Bashforth method (s=2)")
-plt.plot(all_t_4, all_y_4, label="Adams-Bashforth method (s=3)")
-plt.plot(all_t_5, all_y_5, label="Adams-Bashforth method (s=5)")
+# plt.plot(all_t_2, all_y_2, label="RK4 method")
+# plt.plot(all_t_3, all_y_3, label="Adams-Bashforth method (s=2)")
+# plt.plot(all_t_4, all_y_4, label="Adams-Bashforth method (s=3)")
+# plt.plot(all_t_5, all_y_5, label="Adams-Bashforth method (s=5)")
+plt.plot(all_t_6, all_y_6, label="Backward Euler method")
 plt.title("Harmonic Oscillator")
 plt.legend()
 plt.grid()
