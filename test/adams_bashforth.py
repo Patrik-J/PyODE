@@ -1,4 +1,5 @@
-from pyode import ODE, AdamsBashforthSolver
+from pyode.fixedstepsizesolver import AdamsBashforthSolver
+from pyode import ODE
 
 def harmonic_oscillator(t, y):
     # y'' = -y

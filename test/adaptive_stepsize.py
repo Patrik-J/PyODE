@@ -1,4 +1,5 @@
-from pyode import ODE, RK45Solver
+from pyode.adaptivestepsizesolver import RK45Solver
+from pyode import ODE
 
 def harmonic_oscillator(t, y):
     # y'' = -y
