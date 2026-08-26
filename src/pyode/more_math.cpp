@@ -57,6 +57,14 @@ DoubleVector operator/(DoubleVector v, double d) {
     return (1/d)*v;
 };
 
+double abs(DoubleVector v) {
+    unsigned int len = v.size();
+    double sum = 0.0;
+    for (unsigned int i = 0; i < len; i++)
+        sum += pow(v[i], 2);
+    return pow(sum, 0.5);
+}; 
+
 template <typename T>
 void assertSameLength(std::vector<T> v1, std::vector<T> v2) {
     if (v1.size() != v2.size()) 

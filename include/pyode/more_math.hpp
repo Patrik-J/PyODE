@@ -17,6 +17,8 @@ DoubleVector operator*(double d, DoubleVector v);
 DoubleVector operator*(DoubleVector v, double d);
 DoubleVector operator/(DoubleVector v, double d);
 
+double abs(DoubleVector v);
+
 template <typename T>
 void assertSameLength(std::vector<T> v1, std::vector<T> v2);
 
