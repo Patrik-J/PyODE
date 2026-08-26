@@ -4,6 +4,7 @@
 
 #include "ode.hpp"
 #include "solver.hpp"
+#include "adaptive_solver.hpp"
 
 namespace py = pybind11;
 
@@ -46,4 +47,21 @@ PYBIND11_MODULE(_core, m) {
     py::class_<AdamsBashforthSolver, FixedStepsizeSolver>(m, "AdamsBashforthSolver")
     .def(py::init<ODE, unsigned int>(), py::arg("ode"), py::arg("s") = 2, "Create an instace of the AdamsBashforthSolver class")
     .def("step", &AdamsBashforthSolver::step, py::arg("stepsize"), "Perform a Adams-Bashforth step.");
+
+    // Base AdaptiveStepsizeSolver class
+    py::class_<AdaptiveStepsizeSolver>(m, "AdaptiveStepsizeSolver")
+    .def("setInitialConditions", &AdaptiveStepsizeSolver::setInitialConditions, py::arg("initial"), py::arg("t0") = 0.0, "Set the initial conditions.")
+    .def("getCurrentSolution", &AdaptiveStepsizeSolver::getCurrentSolution, "Get the result of the previous step.")
+    .def("setInitialStepsize", &AdaptiveStepsizeSolver::setInitialStepsize, py::arg("initial_stepsize") = 0.001, "Set the initial stepsize.")
+    .def("getCurrentTime", &AdaptiveStepsizeSolver::getCurrentTime, "Get the current time after the previous step.")
+    .def("__repr__", [](const AdaptiveStepsizeSolver &self) {
+        std::ostringstream oss;
+        oss << self;
+        return oss.str();
+    });
+
+    // RK45Solver
+    py::class_<RK45Solver, AdaptiveStepsizeSolver>(m, "RK45Solver")
+    .def(py::init<ODE, double>(), "Create an instace of the RK45Solver class")
+    .def("step", &RK45Solver::step, "Perform a RK4(5) step.");
 };  
