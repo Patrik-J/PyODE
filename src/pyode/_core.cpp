@@ -3,8 +3,8 @@
 #include <pybind11/stl.h>
 
 #include "ode.hpp"
-#include "solver.hpp"
-#include "adaptive_solver.hpp"
+#include "fixedstepsizesolver/solver.hpp"
+#include "adaptivestepsizesolver/adaptive_solver.hpp"
 
 namespace py = pybind11;
 
