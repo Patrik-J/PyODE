@@ -21,8 +21,11 @@ std::ostream& operator<<(std::ostream &strm, const FixedStepsizeSolver& fss) {
     strm << "Fixed stepsize solver of type ";
 
     switch(fss.type) {
-        case FixedStepsizeSolverType::EULER:
+        case FixedStepsizeSolverType::Euler:
             strm << "'Euler'";
+            break;
+        case FixedStepsizeSolverType::BackwardEuler:
+            strm << "'Backward Euler'";
             break;
         case FixedStepsizeSolverType::RK4:
             strm << "'Runge-Kutta 4'";
@@ -38,7 +41,7 @@ std::ostream& operator<<(std::ostream &strm, const FixedStepsizeSolver& fss) {
     return strm << std::endl;
 };
 
-EulerSolver::EulerSolver(ODE ode) : FixedStepsizeSolver(FixedStepsizeSolverType::EULER, ode) {};
+EulerSolver::EulerSolver(ODE ode) : FixedStepsizeSolver(FixedStepsizeSolverType::Euler, ode) {};
 
 void EulerSolver::step(double stepsize) {
     this->t += stepsize; 
@@ -47,7 +50,7 @@ void EulerSolver::step(double stepsize) {
     this->current += stepsize * next;
 };
 
-BackwardEulerSolver::BackwardEulerSolver(ODE ode) : FixedStepsizeSolver(FixedStepsizeSolverType::EULER, ode) {};
+BackwardEulerSolver::BackwardEulerSolver(ODE ode) : FixedStepsizeSolver(FixedStepsizeSolverType::BackwardEuler, ode) {};
 
 void BackwardEulerSolver::step(double stepsize) {
     // y_n+1 = y_n + f(t_n+1, y_n+1)
