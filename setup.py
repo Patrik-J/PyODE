@@ -3,7 +3,7 @@ from setuptools import setup
 
 ext_modules = [
     Pybind11Extension("pyode._core", 
-                      ["src/pyode/ode.cpp", "src/pyode/solver.cpp", "src/pyode/more_math.cpp", "src/pyode/_core.cpp"], 
+                      ["src/pyode/ode.cpp", "src/pyode/solver.cpp", "src/pyode/adaptive_solver.cpp", "src/pyode/more_math.cpp", "src/pyode/solver_exceptions.cpp", "src/pyode/_core.cpp"], 
                       include_dirs=["include/pyode"],
                       cxx_std=17),
 ]
