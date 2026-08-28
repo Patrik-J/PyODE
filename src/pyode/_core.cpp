@@ -9,7 +9,7 @@
 namespace py = pybind11;
 
 PYBIND11_MODULE(_core, m) {
-    m.doc() = "Bindings for the ODE class";
+    m.doc() = "Bindings for the PyODE module.";
 
     // ODE class
     py::class_<ODE>(m, "ODE")
